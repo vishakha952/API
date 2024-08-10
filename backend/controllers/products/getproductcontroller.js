@@ -5,18 +5,23 @@ const getproductcontroller = async (req, res) => {
     const {genre} = req.params;
     let product;
      if (genre) {
-      const searchgenre = genre.toLowerCase();
-      product = await productcollection.find({
-        genre: { $regex: new RegExp(searchgenre, "i") },
-      });
-    }
-  
+       const searchgenre = genre.toLowerCase();
+       product = await productcollection.find({
+         genre: { $regex: new RegExp(searchgenre, "i") },
+       });
+     } 
+     
+     else {
+       product = await productcollection.find()
+     }
 
-    if (!product || product.length === 0) {
+     res.status(200).send(product);
+
+    if (!product || product.length === 0) 
       res.status(404).send({ message: "No products found" });
-    } else {
-      res.status(200).send(product);
-    }
+    
+    
+    
     console.log("Product fetched successfully");
   } catch (error) {
     res.status(500).send({ message: "Error in fetching data" });
